@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodos Numericos</title>
+    <style>
+       body {
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.sidebar {
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrará horizontalmente los elementos */
+    box-shadow: 2px 0 5px white;
+}
+
+.sidebar h2 {
+    color: #c90707; /* Cambia este color al que prefieras */
+    font-weight: 600;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.sidebar a {
+    padding: 15px 0px;
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+    width: 100%; /* Asegura que los enlaces ocupen todo el ancho del sidebar */
+    text-align: center; /* Centra el texto dentro de los enlaces */
+    font-weight: 500;
+}
+
+.sidebar a:hover {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+}
+
+.content {
+    margin-left: 240px;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.form-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-container input[type="text"],
+.form-container input[type="radio"],
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.form-container input[type="radio"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-container button {
+    background-color: #343a40;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container label,
+.form-container input[type="radio"] {
+    display: inline-block;
+    margin-right: 10px; /* Espacio entre los elementos */
+}
+
+.form-container button:hover {
+    background-color: #495057;
+}
+
+.hidden {
+    display: none;
+}
+.caps{
+    color: #f5f5f5;
+}
+        
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2 id="caps">Capítulo 1</h2>
+        <a href="#metodo1" onclick="showForm('biseccion')">Bisección</a>
+        <a href="#metodo2" onclick="showForm('regla_falsa')">Regla Falsa</a>
+        <a href="#metodo3" onclick="showForm('punto_fijo')">Punto Fijo</a>
+        <a href="#metodo4" onclick="showForm('newton')">Newton</a>
+        <a href="#metodo5" onclick="showForm('secante')">Secante</a>
+        <a href="#metodo6" onclick="showForm('raices_multiples')">Raíces Múltiples</a>
+        <h2>Capítulo 2</h2>
+        <a href="#metodo7" onclick="showForm('metodos_iterativos')">Métodos Iterativos</a>
+        <h2>Capítulo 3</h2>
+        <a href="#metodo8" onclick="showForm('interpolacion')">Interpolación</a>
+    </div>
+
+<div class="content">
+    <div id="biseccion-form" class="form-container">
+        <h1 id="method-title">Bisección</h1>
+        <p>Para garantizar la precisión y eficacia del método de Bisección en el cálculo de raíces de funciones, es fundamental cumplir con las siguientes condiciones:<br><br>
+
+            "x0" debe ser menor que "x1", ya que el método de secante trabaja en un intervalo cerrado.<br><br>
+            "El intervalo debe contener una raíz de la función, es decir, f(x0) * f(x1) < 0"<br><br>
+            
+            La función a evaluar debe ser continua en el intervalo especificado y debe cumplir el siguiente formato. EJM: x**3 + 7*x**2 - 60<br><br>
+            La tolerancia puede ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5</p>
+        <form method="post" action="{% url 'biseccion' %}">
+            {% csrf_token %}
+            <label for="xi_bs">Valor de x inferior:</label>
+            <input type="text" id="xi_bs" name="xi">
+            <label for="xs_bs">Valor de x superior:</label>
+            <input type="text" id="xs_bs" name="xs">
+            <label for="tipo_error">Tipo de error:</label>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <label for="relativo">Relativo</label>
+            <br>
+            <label for="tol_bs">Tolerancia:</label>
+            <input type="text" id="tol_bs" name="tol">
+            <label for="niter_bs">Numero máximo de iteraciones:</label>
+            <input type="text" id="niter_bs" name="niter">
+            <label for="funcion_bs">Función:</label>
+            <input type="text" id="funcion_bs" name="funcion">
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+
+    <div id="regla_falsa-form" class="form-container hidden">
+        <h1 id="method-title">Regla Falsa</h1>
+        <p>Para garantizar la precisión y eficacia del método de Regla Falsa en el cálculo de raíces de funciones, es fundamental cumplir con las siguientes condiciones:<br><br>
+            - El "Valor de a" y "Valor de b" deben ser valores numéricos que definan el intervalo inicial donde se buscará la raíz. El intervalo [a, b] debe contener al menos una raíz de la función.<br><br>
+            - La función a evaluar debe ser continua en el intervalo especificado y debe ingresarse en el formato adecuado. Ejemplo: x**3 + 7*x**2 - 60.<br><br>
+            - La "Tolerancia" debe ingresarse en formato decimal, como 0.0001 o 0.5e-5, y representa la precisión deseada para el resultado.<br><br>
+            - El "Número máximo de iteraciones" debe ser un número entero positivo, que limita la cantidad de iteraciones permitidas.<br><br>
+            - Seleccione el "Tipo de error" entre absoluto o relativo para determinar el criterio de convergencia.</p>
+        <form method="post" action="{% url 'regla_falsa' %}">
+            {% csrf_token %}
+            
+            <label for="a_rf">Valor de a:</label>
+            <input type="text" id="a_rf" name="a" placeholder="Ingrese el valor de a" required>
+            
+            
+            <label for="b_rf">Valor de b:</label>
+            <input type="text" id="b_rf" name="b" placeholder="Ingrese el valor de b" required>
+            
+            
+            <label for="tolerancia_rf">Tolerancia:</label>
+            <input type="text" id="tolerancia_rf" name="tolerancia" placeholder="Ingrese la tolerancia" required>
+           
+            
+            <label for="iteraciones_rf">Iteraciones:</label>
+            <input type="text" id="iteraciones_rf" name="iteraciones" placeholder="Ingrese el número máximo de iteraciones" required>
+            
+            
+            <label for="funcion_rf">Función:</label>
+            <input type="text" id="funcion_rf" name="funcion" placeholder="Ingrese la función f(x)" required>
+            
+            
+            <label for="tipo_error">Tipo de error:</label>
+            <br>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto" required>
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo" required>
+            <label for="relativo">Relativo</label>
+            
+            <br>
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+    
+    
+    <div id="punto_fijo-form" class="form-container hidden">
+        <h1 id="method-title">Punto Fijo</h1>
+        <p>Para garantizar la precisión y eficacia del método de Punto Fijo en el cálculo de raíces de funciones, es fundamental cumplir con las siguientes condiciones:<br><br>
+            - El "Punto inicial" debe ser un valor numérico que servirá como punto de partida para el método.<br><br>
+            - La función f(x) debe ser continua y debe ingresarse en el formato adecuado. Ejemplo: x**3 + 7*x**2 - 60.<br><br>
+            - La función g(x) debe transformarse adecuadamente desde f(x) para que x = g(x) corresponda a la solución buscada.<br><br>
+            - La "Tolerancia" debe ingresarse en formato decimal, como 0.0001 o 0.5e-5, y representa la precisión deseada para el resultado. Si se quiere un error menor al 1%, poner 0.01.<br><br>
+            - El "Número máximo de iteraciones" debe ser un número entero positivo, que limita la cantidad de iteraciones permitidas.<br><br>
+            - Seleccione el "Tipo de error" entre absoluto o relativo para determinar el criterio de convergencia.</p>
+        <form method="post" action="{% url 'PuntoFijo' %}">
+            {% csrf_token %}
+            
+            <label for="punto_inicial">Punto inicial:</label>
+            <input type="text" id="punto_inicial" name="vInicial" placeholder="Ingrese el punto inicial" required>
+            
+            
+            <label for="ff">f(x):</label>
+            <input type="text" id="ff" name="funcion-F" placeholder="Ingrese la función f(x)" required>
+            
+            
+            <label for="gg">g(x):</label>
+            <input type="text" id="gg" name="funcion-G" placeholder="Ingrese la función g(x)" required>
+            
+            
+            <label for="tolerancia">Tolerancia:</label>
+            <input type="text" id="tolerancia" name="tolerancia" placeholder="Ingrese la tolerancia" required>
+            
+            
+            <label for="iteraciones">Iteraciones:</label>
+            <input type="text" id="iteraciones" name="iteraciones" placeholder="Ingrese el número máximo de iteraciones" required>
+            
+            
+            <label for="tipo_error">Tipo de error:</label>
+            <br>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto" required>
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo" required>
+            <label for="relativo">Relativo</label>
+            
+            <br>
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+    
+    
+
+    <div id="newton-form" class="form-container hidden">
+        <h1 id="method-title">Newton</h1>
+        <p>Para garantizar la precisión y eficacia del método de Newton, es fundamental cumplir con las siguientes condiciones:<br/><br/>
+            "Punto inicial" debe ser un valor numérico que servirá como punto de partida para el método.<br/><br/>
+            La función a evaluar debe ser continua y debe cumplir el siguiente formato. EJM: x**3 + 7*x**2 - 60<br/><br/>
+            La tolerancia puede ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5.Ej Si se quiere un error menor al 1% poner 0.01<br/><br/>
+            La derivada de la función debe ser ingresada en el formato adecuado. Ejemplo: 3*x**2 + 14*x<br/><br/>
+            El "Número máximo de iteraciones" debe ser un número entero positivo, que limita la cantidad de iteraciones permitidas.<br/><br/>
+            Seleccione el "Tipo de error" entre absoluto o relativo para determinar el criterio de convergencia.
+        </p>
+        <form method="post" action="{% url 'Newton' %}">
+            {% csrf_token %}
+            
+            <label for="punto_inicial">Punto inicial:</label>
+            <input type="text" id="punto_inicial" name="punto_inicial">
+            <label for="punto_inicial">Tolerancia:</label>
+            <input type="text" id="punto_inicial" name="tolerancia">
+            <label for="punto_inicial">Iteraciones:</label>
+            <input type="text" id="punto_inicial" name="iteraciones">
+            <label for="punto_inicial">Función:</label>
+            <input type="text" id="punto_inicial" name="funcion">
+            <br/>
+            <label for="punto_inicial">Derivada:</label>
+            <input type="text" id="punto_inicial" name="derivada">
+            <label for="tipo_error">Tipo de error:</label>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <label for="relativo">Relativo</label>
+            <br/>
+            <a href="https://www.geogebra.org/calculator">Calculadora para realizar la derivada</a>
+            
+            <br><br>
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+
+
+    <div id="secante-form" class="form-container hidden">
+        <h1 id="Secante">Secante</h1>
+        <p>Para garantizar la precisión y eficacia del método de secante en el cálculo de raíces de funciones, es fundamental cumplir con las siguientes condiciones:<br><br>
+            "x inferior" debe ser menor que "x superior", ya que el método de secante trabaja en un intervalo cerrado.<br><br>
+            
+            La función a evaluar debe ser continua en el intervalo especificado y debe cumplir el siguiente formato. EJM: x**3 + 7*x**2 - 60<br><br>
+            La tolerancia toma el error relativo ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5.Ej Si se quiere un error menor al 1% poner 0.01</p>
+        <form method="post" action="{% url 'secante' %}">
+        <form method="post" action="#">
+            {% csrf_token %}
+            
+            <label for="x0_sc">Valor de x0 (inferior):</label>
+            <input type="text" id="x0_sc" name="x0">
+            <label for="x1_sc">Valor de x1 (superior):</label>
+            <input type="text" id="x1_sc" name="x1">
+
+            <label for="tipo_error">Tipo de error:</label>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <label for="relativo">Relativo</label>
+            <br>
+            <label for="tol_sc">Tolerancia:</label>
+            <input type="text" id="tol_sc" name="tol">
+            <label for="niter_sc">Numero máximo de iteraciones:</label>
+            <input type="text" id="niter_sc" name="niter">
+            <label for="funcion_sc">Función:</label>
+            <input type="text" id="funcion_sc" name="funcion">
+            <button type="submit">Calcular</button> 
+        </form>
+    </div>
+
+    <div id="raices_multiples-form" class="form-container hidden">
+        <h1 id="method-title">Raices multiples</h1>
+        <p>Para garantizar la precisión y eficacia del método de Raices Multiples, es fundamental cumplir con las siguientes condiciones:<br/><br/>
+            "Punto inicial" debe ser un valor numérico que servirá como punto de partida para el método.<br/><br/>
+            La función a evaluar debe ser continua y debe cumplir el siguiente formato. EJM: x**3 + 7*x**2 - 60<br/><br/>
+            La tolerancia puede ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5.Ej Si se quiere un error menor al 1% poner 0.01<br/><br/>
+            El "Número máximo de iteraciones" debe ser un número entero positivo, que limita la cantidad de iteraciones permitidas.<br/><br/>
+            Seleccione el "Tipo de error" entre absoluto o relativo para determinar el criterio de convergencia.
+        </p>
+        <form method="post" action="{% url 'RaicesMultiples' %}">
+            {% csrf_token %}
+            
+            <label for="punto_inicial">Función:</label>
+            <input type="text" id="punto_inicial" name="funcion">
+            <label for="punto_inicial">Punto inicial:</label>
+            <input type="text" id="punto_inicial" name="punto_inicial">
+            <label for="punto_inicial">Tolerancia:</label>
+            <input type="text" id="punto_inicial" name="tolerancia">
+            <label for="punto_inicial">Iteraciones:</label>
+            <input type="text" id="punto_inicial" name="iteraciones">
+            <br/>
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <label for="absoluto">Absoluto</label>
+            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <label for="relativo">Relativo</label>
+            <button type="submit">Calcular</button>
+        </form>
+    </div>
+
+    <div id="metodos_iterativos-form" class="form-container hidden">
+        <h1 id="method-title">Metodos iterativos</h1>
+        <p>Para garantizar la precisión y eficacia del método iterativo, es fundamental cumplir con las siguientes condiciones:<br><br>
+            Llene todos los campos y selectores.
+            La matriz debe ser invertible, que en su diagonal no hayan 0's<br><br>
+            Los campos de la matriz o de los vectores que no sean ingresados serán asumidos como 0<br><br>
+
+            La tolerancia puede ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5</p>
+        <form method="post" action="{% url 'iterativos' %}">
+            {% csrf_token %}
+            <label for="metodo_iterativo">Método iterativo:</label>
+            <select id="metodo_iterativo" name="metodo_iterativo" onchange="ismethodsor(this.value)">
+                <option value="gauss_seidel">Gauss-Seidel</option>
+                <option value="jacobi">Jacobi</option>
+                <option value="sor">SOR</option>
+            </select>
+            <label for="tamaño_matriz">Tamaño matriz (hasta 10):</label><input type="number" id="numero" name="numero" min="1" max="10" onchange="showMatrix(this.value)">
+            <br>
+            <label for="tol_sc">Tolerancia:</label>
+            <input type="text" id="tol_sc" name="tol">
+            <label for="niter_sc">Numero máximo de iteraciones:</label>
+            <input type="text" id="niter_sc" name="niter">
+            <br>
+            <div id="w_container" class="hidden">
+                <label for="w_sc">Valor de w:</label>
+                <input type="text" id="w_sc" name="w">
+            </div>
+            <div id="matrix-container" class="hidden">
+                <h2>Matriz</h2>
+                <table id="matrix" name="matrix_name">
+                    <!-- Matrix entries will be dynamically added here -->
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div id="vectorx-container" class="hidden">
+                            <h2>Vector inicial (x0) |-|-| </h2>
+                            <table id="vectorx">
+                                <!-- Matrix entries will be dynamically added here -->
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="vectorb-container" class="hidden">
+                            <h2>Vector (b)</h2>
+                            <table id="vectorb">
+                                <!-- Matrix entries will be dynamically added here -->
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="submit">Evaluar</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id="interpolacion-form" class="form-container hidden">
+        <h1 id="method-title">Interpolación</h1>
+        <p>Elija que metodo desea utilizar:<br><br>
+
+            "Puede agregar y eliminar las columnas que desee.<br><br>
+            "Las X deben estar organizadas de menor a mayor"<br><br>
+            "No deben haber dos X con el mismo valor"<br><br>
+            "No deje espacios vacios, si no usa una columna eliminela"<br><br>
+
+        <form method="post" action="{% url 'interpolacion' %}">
+            {% csrf_token %}
+            <label for="metodo_interpolacion">Método de interpolación:</label>
+            <select id="metodo_interpolacion" name="metodo_interpolacion">
+                <option value="vandermonde">Vandermonde</option>
+                <option value="lagrange">Lagrange</option>
+                <option value="newton">Newton</option>
+                <option value="splinel">Spline Lineal</option>
+                <option value="splinecu">Spline Cubico</option>
+            </select>
+            <br>
+            <table id="data-table" border="1">
+                <tr>
+                    <td>X</td>
+                    <td><input type="text" name="x[]" /></td>
+                </tr>
+                <tr>
+                    <td>Y</td>
+                    <td><input type="text" name="y[]" /></td>
+                </tr>
+            </table>
+            <button type="button" onclick="addColumn()">Agregar columna</button>
+            <button type="button" onclick="removeColumn()">Eliminar columna</button>
+            <br>
+            <button type="submit">Evaluar</button>
+        </form>
+    </div>
+</div>
+<script>
+    function ismethodsor(method){
+        if(method == "sor"){
+            document.getElementById("w_container").classList.remove("hidden");
+            }else{
+                document.getElementById("w_container").classList.add("hidden");
+                }
+    }
+</script>
+<script>
+    function showForm(method) {
+        document.querySelectorAll('.form-container').forEach(function(form) {
+            form.classList.add('hidden');
+        });
+        document.getElementById(method + '-form').classList.remove('hidden');
+        document.getElementById('method-title').innerText = method.replace('_', ' ').charAt(0).toUpperCase() + method.replace('_', ' ').slice(1);
+
+    }
+</script>
+<script>
+    function showMatrix(size) {
+        var matrixContainer = document.getElementById("matrix-container");
+        var matrixTable = document.getElementById("matrix");
+        matrixTable.innerHTML = ""; // Clear previous matrix
+
+        for (var i = 0; i < size; i++) {
+            var row = matrixTable.insertRow();
+            for (var j = 0; j < size; j++) {
+                var cell = row.insertCell();
+                cell.innerHTML = `<input type='number' min='-999' max='999' name='matrix_cell_${i}_${j}'>`;
+            }
+        }
+        matrixContainer.classList.remove("hidden");
+
+        var vectorxContainer=document.getElementById("vectorx-container");
+        var vectorxTable=document.getElementById("vectorx");
+        vectorxTable.innerHTML="";
+        for (var i = 0; i < size; i++) {
+            var row = vectorxTable.insertRow();
+            var cell = row.insertCell();
+            cell.innerHTML = `<input type='number' min='-999' max='999' name='vx_cell_${i}'>`;
+        }
+        vectorxContainer.style.display="block";
+
+        var vectorbContainer=document.getElementById("vectorb-container");
+        var vectorbTable=document.getElementById("vectorb");
+        vectorbTable.innerHTML="";
+        for (var i = 0; i < size; i++) {
+            var row = vectorbTable.insertRow();
+            var cell = row.insertCell();
+            cell.innerHTML = `<input type='number' min='-999' max='999' name='vb_cell_${i}'>`;
+        }
+        vectorbContainer.style.display="block";
+    }
+</script>
+<script>
+    function addColumn() {
+        var table = document.getElementById("data-table");
+        var rowCount = table.rows.length;
+        for (var i = 0; i < rowCount; i++) {
+            var row = table.rows[i];
+            var cell = row.insertCell(-1);
+            cell.innerHTML = '<input type="text" name="' + (i == 0 ? 'x[]' : 'y[]') + '" />';
+        }
+    }
+
+    function removeColumn() {
+        var table = document.getElementById("data-table");
+        var rowCount = table.rows.length;
+        if (table.rows[0].cells.length > 2) {
+            for (var i = 0; i < rowCount; i++) {
+                var row = table.rows[i];
+                row.deleteCell(-1);
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

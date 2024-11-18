@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Hubo un error</h4>
+            <p>{{ error_message }}</p>
+            <hr>
+            <p class="mb-0">Por favor revisa los datos y vuelve a intentarlo.</p>
+        </div>
+        <img src="{% static 'img/error.jpeg' %}" alt="Error Image" class="img-fluid mt-3">
+    </div>
+</body>
+</html>

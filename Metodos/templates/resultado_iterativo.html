@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{nombre_metodo}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    </style>    
+    <!-- Agrega aquí los enlaces para los estilos CSS necesarios -->
+</head>
+<body>
+
+<div class="sidebar">
+    <!-- Agrega aquí los enlaces para los diferentes métodos si lo deseas -->
+</div>
+
+<div class="content">
+    <h1>{{nombre_metodo}}</h1>
+    <br>
+    <h3 >{{ mensaje }}</h3>
+    <br>
+    {% if solucion %}
+        <div class="radio-container">
+            <!-- Aquí se mostrará el gráfico de Plotly -->
+            <h3 >Radio espectral: {{ radio_esp }}</h3>
+            <br>
+            <h3 >Matriz T</h3>
+            <br>
+            <div class="t-container">
+                <!-- Aquí se mostrará la tabla generada -->
+                {{ T | safe }}
+            </div>
+            <br>
+            <h3 >Matriz C</h3>
+            <br>
+            <div class="C-container">
+                <!-- Aquí se mostrará la tabla generada -->
+                {{ C | safe }}
+            </div>
+            <br>
+        </div>
+        <div class="result-container">
+            <!-- Aquí se mostrará la tabla generada -->
+            {{ df | safe }}
+        </div>
+    {% endif %}
+    <div class="button-container">
+        <form action="/#metodo7">
+            <button type="submit">Volver</button>
+        </form>
+    </div>
+
+<!-- Agrega aquí los scripts necesarios, como el de Plotly si es necesario -->
+
+</body>
+</html>
