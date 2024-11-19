@@ -7,58 +7,64 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Metodos Numéricos</title>
     <style>
         body {
             margin: 0;
             padding: 0;
+            padding-bottom: 100px;
+            /* min-height: 100dvh; */
             font-family: "Montserrat", sans-serif;
             font-optical-sizing: auto;
             background-color: #f5f5f5;
             color: #000;
+            overflow-y: scroll;
         }
 
-        .sidebar {
-            height: 100%;
-            width: 220px;
-            position: fixed;
+        .navbar {
+            /* width: 100%; */
+            background-color: #111;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0 0 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             top: 0;
             left: 0;
-            background-color: #111;
-            padding-top: 20px;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: #c90707;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0 50px;
             display: flex;
-            flex-direction: column;
-            align-items: center; /* Centrará horizontalmente los elementos */
-            box-shadow: 2px 0 5px white;
         }
 
-        .sidebar h2 {
-            color: #c90707; /* Cambia este color al que prefieras */
-            font-weight: 600;
-            margin: 10px 0;
-            text-align: center;
+        .navbar ul li {
+            margin: 0 10px;
         }
 
-        .sidebar a {
-            padding: 15px 0px;
+        .navbar ul li a {
             text-decoration: none;
-            color: #fff;
-            display: block;
-            transition: background-color 0.3s, color 0.3s;
-            width: 100%; /* Asegura que los enlaces ocupen todo el ancho del sidebar */
-            text-align: center; /* Centra el texto dentro de los enlaces */
+            color: white;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
-        .sidebar a:hover {
-            background-color: #333;
-            color: #fff;
-            width: 100%;
+        .navbar ul li a:hover {
+            color: #c90707;
         }
 
         .content {
-            margin-left: 240px;
+            margin: 0 auto;
             padding: 40px;
             background-color: #ffffff;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -126,26 +132,134 @@
             color: #f5f5f5;
         }
         
+            .card-container {
+        display: flex;
+        flex-wrap: wrap; /* Permite que las cards se ajusten en pantallas pequeñas */
+        justify-content: space-around;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .card-container .card:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            width: 100%; /* Las cards ocuparán el ancho completo en pantallas pequeñas */
+        }
+    }
+
+    .home {
+        cursor: pointer;
+        user-select: none;
+    }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2 id="caps">Capítulo 1</h2>
-        <a href="#metodo1" onclick="showForm('biseccion')">Bisección</a>
-        <a href="#metodo2" onclick="showForm('regla_falsa')">Regla Falsa</a>
-        <a href="#metodo3" onclick="showForm('punto_fijo')">Punto Fijo</a>
-        <a href="#metodo4" onclick="showForm('newton')">Newton</a>
-        <a href="#metodo5" onclick="showForm('secante')">Secante</a>
-        <a href="#metodo6" onclick="showForm('raices_multiples')">Raíces Múltiples</a>
-        <h2>Capítulo 2</h2>
-        <a href="#metodo7" onclick="showForm('metodos_iterativos')">Métodos Iterativos</a>
-        <h2>Capítulo 3</h2>
-        <a href="#metodo8" onclick="showForm('interpolacion')">Interpolación</a>
+    <div class="navbar">
+        <h2 id="caps" class="home" onclick="showForm('inicio')">Métodos Numéricos</h2>
+        <ul>
+            <li><a class="home" onclick="showForm('biseccion')">Bisección</a></li>
+            <li><a class="home" onclick="showForm('regla_falsa')">Regla Falsa</a></li>
+            <li><a class="home" onclick="showForm('punto_fijo')">Punto Fijo</a></li>
+            <li><a class="home" onclick="showForm('newton')">Newton</a></li>
+            <li><a class="home" onclick="showForm('secante')">Secante</a></li>
+            <li><a class="home" onclick="showForm('raices_multiples')">Raíces Múltiples</a></li>
+            <li><a class="home" onclick="showForm('metodos_iterativos')">Iterativos</a></li>
+            <li><a class="home" onclick="showForm('interpolacion')">Interpolación</a></li>
+        </ul>
     </div>
 
 <div class="content">
-    <div id="biseccion-form" class="form-container">
+
+    <div class="form-container" id="inicio-form">
+        <h1 id="method-title">Seleccione un método</h1>
+        <p>Seleccione un método para resolver problemas numéricos.</p>
+        <p>Métodos disponibles:</p>
+        
+        <!-- Contenedor de las cards -->
+        <div class="card-container">
+            <!-- Card 1 -->
+            <div class="card" onclick="showForm('biseccion')">
+                <h2>Bisección</h2>
+                <p>Encuentra raíces de funciones continuas en un intervalo dado.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card" onclick="showForm('regla_falsa')">
+                <h2>Regla Falsa</h2>
+                <p>Resuelve ecuaciones no lineales utilizando interpolación lineal.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card" onclick="showForm('punto_fijo')">
+                <h2>Punto Fijo</h2>
+                <p>Encuentra soluciones iterativas usando una función transformada.</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card" onclick="showForm('newton')">
+                <h2>Newton</h2>
+                <p>Encuentra raíces utilizando derivadas y aproximaciones sucesivas.</p>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card" onclick="showForm('secante')">
+                <h2>Secante</h2>
+                <p>Resuelve ecuaciones no lineales sin necesidad de derivadas.</p>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="card" onclick="showForm('raices_multiples')">
+                <h2>Raíces Múltiples</h2>
+                <p>Encuentra raíces que aparecen repetidas en una función.</p>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="card" onclick="showForm('metodos_iterativos')">
+                <h2>Iterativos</h2>
+                <p>Resuelve sistemas lineales utilizando métodos iterativos como Gauss-Seidel y Jacobi.</p>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="card" onclick="showForm('interpolacion')">
+                <h2>Interpolación</h2>
+                <p>Encuentra funciones polinomiales que aproximan conjuntos de datos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="biseccion-form" class="form-container hidden">
         <h1 id="method-title">Bisección</h1>
         <p>Para garantizar la precisión y eficacia del método de Bisección en el cálculo de raíces de funciones, es fundamental cumplir con las siguientes condiciones:<br><br>
 
@@ -280,23 +394,23 @@
             {% csrf_token %}
             
             <label for="punto_inicial">Punto inicial:</label>
-            <input type="text" id="punto_inicial" name="punto_inicial">
+            <input type="text" id="punto_inicial" name="punto_inicial" required>
             <label for="punto_inicial">Tolerancia:</label>
-            <input type="text" id="punto_inicial" name="tolerancia">
+            <input type="text" id="punto_inicial" name="tolerancia" required>
             <label for="punto_inicial">Iteraciones:</label>
-            <input type="text" id="punto_inicial" name="iteraciones">
+            <input type="text" id="punto_inicial" name="iteraciones" required>
             <label for="punto_inicial">Función:</label>
-            <input type="text" id="punto_inicial" name="funcion">
+            <input type="text" id="punto_inicial" name="funcion" required>
             <br/>
             <label for="punto_inicial">Derivada:</label>
-            <input type="text" id="punto_inicial" name="derivada">
+            <input type="text" id="punto_inicial" name="derivada" required>
             <label for="tipo_error">Tipo de error:</label>
-            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto" required>
             <label for="absoluto">Absoluto</label>
-            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <input type="radio" id="relativo" name="tipo_error" value="relativo" required>
             <label for="relativo">Relativo</label>
             <br/>
-            <a href="https://www.geogebra.org/calculator">Calculadora para realizar la derivada</a>
+            <a href="https://www.geogebra.org/calculator" target="_blank">Calculadora para realizar la derivada</a>
             
             <br><br>
             <button type="submit">Calcular</button>
@@ -316,29 +430,29 @@
             {% csrf_token %}
             
             <label for="x0_sc">Valor de x0 (inferior):</label>
-            <input type="text" id="x0_sc" name="x0">
+            <input type="text" id="x0_sc" name="x0" required>
             <label for="x1_sc">Valor de x1 (superior):</label>
-            <input type="text" id="x1_sc" name="x1">
+            <input type="text" id="x1_sc" name="x1" required>
 
             <label for="tipo_error">Tipo de error:</label>
-            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto" required>
             <label for="absoluto">Absoluto</label>
-            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <input type="radio" id="relativo" name="tipo_error" value="relativo" required>
             <label for="relativo">Relativo</label>
             <br>
             <label for="tol_sc">Tolerancia:</label>
-            <input type="text" id="tol_sc" name="tol">
+            <input type="text" id="tol_sc" name="tol" required>
             <label for="niter_sc">Numero máximo de iteraciones:</label>
-            <input type="text" id="niter_sc" name="niter">
+            <input type="text" id="niter_sc" name="niter" required>
             <label for="funcion_sc">Función:</label>
-            <input type="text" id="funcion_sc" name="funcion">
+            <input type="text" id="funcion_sc" name="funcion" required>
             <button type="submit">Calcular</button> 
         </form>
     </div>
 
     <div id="raices_multiples-form" class="form-container hidden">
-        <h1 id="method-title">Raices multiples</h1>
-        <p>Para garantizar la precisión y eficacia del método de Raices Multiples, es fundamental cumplir con las siguientes condiciones:<br/><br/>
+        <h1 id="method-title">Raíces Múltiples</h1>
+        <p>Para garantizar la precisión y eficacia del método de Raíces Múltiples, es fundamental cumplir con las siguientes condiciones:<br/><br/>
             "Punto inicial" debe ser un valor numérico que servirá como punto de partida para el método.<br/><br/>
             La función a evaluar debe ser continua y debe cumplir el siguiente formato. EJM: x**3 + 7*x**2 - 60<br/><br/>
             La tolerancia puede ser ingresada en formato decimal EJM: 0.0001 o punto flotante EJM 0.5e-5.Ej Si se quiere un error menor al 1% poner 0.01<br/><br/>
@@ -349,17 +463,17 @@
             {% csrf_token %}
             
             <label for="punto_inicial">Función:</label>
-            <input type="text" id="punto_inicial" name="funcion">
+            <input type="text" id="punto_inicial" name="funcion" required>
             <label for="punto_inicial">Punto inicial:</label>
-            <input type="text" id="punto_inicial" name="punto_inicial">
+            <input type="text" id="punto_inicial" name="punto_inicial" required>
             <label for="punto_inicial">Tolerancia:</label>
-            <input type="text" id="punto_inicial" name="tolerancia">
+            <input type="text" id="punto_inicial" name="tolerancia" required>
             <label for="punto_inicial">Iteraciones:</label>
-            <input type="text" id="punto_inicial" name="iteraciones">
+            <input type="text" id="punto_inicial" name="iteraciones" required>
             <br/>
-            <input type="radio" id="absoluto" name="tipo_error" value="absoluto">
+            <input type="radio" id="absoluto" name="tipo_error" value="absoluto" required>
             <label for="absoluto">Absoluto</label>
-            <input type="radio" id="relativo" name="tipo_error" value="relativo">
+            <input type="radio" id="relativo" name="tipo_error" value="relativo" required>
             <label for="relativo">Relativo</label>
             <button type="submit">Calcular</button>
         </form>
@@ -384,13 +498,13 @@
             <label for="tamaño_matriz">Tamaño matriz (hasta 10):</label><input type="number" id="numero" name="numero" min="1" max="10" onchange="showMatrix(this.value)">
             <br>
             <label for="tol_sc">Tolerancia:</label>
-            <input type="text" id="tol_sc" name="tol">
+            <input type="text" id="tol_sc" name="tol" required>
             <label for="niter_sc">Numero máximo de iteraciones:</label>
-            <input type="text" id="niter_sc" name="niter">
+            <input type="text" id="niter_sc" name="niter" required>
             <br>
             <div id="w_container" class="hidden">
                 <label for="w_sc">Valor de w:</label>
-                <input type="text" id="w_sc" name="w">
+                <input type="text" id="w_sc" name="w" required>
             </div>
             <div id="matrix-container" class="hidden">
                 <h2>Matriz</h2>
@@ -447,11 +561,11 @@
             <table id="data-table" border="1">
                 <tr>
                     <td>X</td>
-                    <td><input type="text" name="x[]" /></td>
+                    <td><input type="text" name="x[]" required/></td>
                 </tr>
                 <tr>
                     <td>Y</td>
-                    <td><input type="text" name="y[]" /></td>
+                    <td><input type="text" name="y[]" required/></td>
                 </tr>
             </table>
             <button type="button" onclick="addColumn()">Agregar columna</button>

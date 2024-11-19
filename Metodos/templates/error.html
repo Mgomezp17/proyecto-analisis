@@ -1,21 +1,104 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Error</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading">Hubo un error</h4>
-            <p>{{ error_message }}</p>
-            <hr>
-            <p class="mb-0">Por favor revisa los datos y vuelve a intentarlo.</p>
-        </div>
-        <img src="{% static 'img/error.jpeg' %}" alt="Error Image" class="img-fluid mt-3">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding-bottom: 100px;
+      }
+      .navbar {
+        /* width: 100%; */
+        height: 70px;
+        background-color: #111;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0 0 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        top: 0;
+        left: 0;
+      }
+
+      .navbar h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+        color: #c90707;
+      }
+
+      .navbar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0 50px;
+        display: flex;
+      }
+
+      .navbar ul li {
+        margin: 0 10px;
+      }
+
+      .navbar ul li a {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .navbar ul li a:hover {
+        color: #c90707;
+      }
+
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <h2 id="caps">Métodos Numéricos</h2>
+      <ul>
+        <li>
+          <a href="/"
+            >Volver atrás
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
+              /></svg
+          ></a>
+        </li>
+      </ul>
     </div>
-</body>
+    <div class="container mt-5">
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Hubo un error</h4>
+        <p>{{ error_message }}</p>
+        <hr />
+        <p class="mb-0">
+          Qué pasó compa revise los datos y vuelva a intentarlo más bien, se ve
+          que no puso atención en clase.
+        </p>
+      </div>
+      <img
+        src="{% static 'img/error2.jpg' %}"
+        alt="Error Image"
+        class="img-fluid mt-3"
+      />
+    </div>
+  </body>
 </html>
